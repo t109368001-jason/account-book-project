@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: "Account Book Server"
+
+server:
+  port: 18080
