@@ -1,6 +1,11 @@
 spring:
   application:
     name: "Account Book Server"
+  security:
+    user:
+      name: "admin"
+      password: "admin"
+      roles: "ADMIN"
 
 server:
   port: 18080
