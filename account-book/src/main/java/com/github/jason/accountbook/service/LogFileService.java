@@ -34,7 +34,7 @@ public class LogFileService {
   public final Path logFileFolder = Paths.get("./logs");
   
   public LogFileService() {
-    log.debug("new instance={}", this);
+    log.info("new instance={}", this);
   }
   
   @Data

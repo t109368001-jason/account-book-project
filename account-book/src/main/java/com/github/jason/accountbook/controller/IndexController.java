@@ -17,7 +17,7 @@ public class IndexController {
   private String appName;
   
   public IndexController() {
-    log.debug("new instance={}", this);
+    log.info("new instance={}", this);
   }
   
   @GetMapping("/")

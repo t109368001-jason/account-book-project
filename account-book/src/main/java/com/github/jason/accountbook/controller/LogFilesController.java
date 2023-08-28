@@ -30,7 +30,7 @@ public class LogFilesController {
   public LogFilesController(final LogFileService logFileService) {
     this.logFileService = logFileService;
     
-    log.debug("new instance={}", this);
+    log.info("new instance={}", this);
   }
   
   @GetMapping(path = "")
