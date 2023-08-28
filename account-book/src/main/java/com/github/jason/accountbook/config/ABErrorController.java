@@ -1,4 +1,4 @@
-package com.github.jason.accountbook.controller;
+package com.github.jason.accountbook.config;
 
 import java.util.Map;
 
@@ -19,11 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 @ToString
 @Slf4j
 @Component
-public class ErrorController extends BasicErrorController {
+public class ABErrorController extends BasicErrorController {
   
   private final ErrorAttributes errorAttributes;
   
-  public ErrorController(ErrorAttributes errorAttributes, ServerProperties serverProperties) {
+  public ABErrorController(ErrorAttributes errorAttributes, ServerProperties serverProperties) {
     super(errorAttributes, serverProperties.getError());
     this.errorAttributes = errorAttributes;
     

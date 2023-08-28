@@ -1,4 +1,4 @@
-package com.github.jason.accountbook.error;
+package com.github.jason.accountbook.config;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -17,7 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import jakarta.validation.ConstraintViolationException;
 
 @Component
-public class ErrorAttributes extends DefaultErrorAttributes {
+public class ABErrorAttributes extends DefaultErrorAttributes {
   
   @Override
   public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
@@ -25,8 +25,8 @@ public class ErrorAttributes extends DefaultErrorAttributes {
     
     // put exception class and handling method here
     // the above has higher priority
-    exceptionHandlerMap.put(BindException.class, ErrorAttributes::handleBindException);
-    exceptionHandlerMap.put(ConstraintViolationException.class, ErrorAttributes::handleConstraintViolationException);
+    exceptionHandlerMap.put(BindException.class, ABErrorAttributes::handleBindException);
+    exceptionHandlerMap.put(ConstraintViolationException.class, ABErrorAttributes::handleConstraintViolationException);
     
     // apply error to single handler
     final Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
