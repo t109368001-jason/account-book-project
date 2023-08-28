@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Account Book Server</title>
+    <title th:text="${appName}">Demo Server</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
+
+<header th:insert="fragments/header.html :: header"></header>
 <h1>Hello !</h1>
-<p>Welcome to <span th:text="${appName}"></span></p>
+<p>Welcome to <span th:text="${appName}">Demo Server</span></p>
+
 </body>
 </html>
