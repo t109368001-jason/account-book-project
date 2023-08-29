@@ -1,12 +1,19 @@
 import React from "react";
 import { AppBar, Button, Toolbar, Typography } from "@mui/material";
-import { logout, selectUser } from "../UserSlice";
+import { clearUser, selectUser } from "../UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../services/UserService";
 
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+
+  const handleLogoutClick = () => {
+    logout().then(() => {
+      dispatch(clearUser());
+    });
+  };
 
   return (
     <AppBar position={"relative"}>
@@ -14,7 +21,7 @@ const Header = () => {
         {user.loggedIn ? (
           <>
             <Typography>{user.name}</Typography>
-            <Button color="inherit" onClick={() => dispatch(logout())}>
+            <Button color="inherit" onClick={handleLogoutClick}>
               Logout
             </Button>
           </>

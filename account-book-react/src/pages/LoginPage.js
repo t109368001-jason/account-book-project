@@ -1,15 +1,20 @@
 import React from "react";
 import { Button } from "@mui/material";
-import { login } from "../UserSlice";
+import { setUser } from "../UserSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { login } from "../services/UserService";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLoginClick = () => {
-    dispatch(login({ name: "User" }));
+    const username = "admin";
+    const password = "admin";
+    login({ username, password }).then((res) => {
+      dispatch(setUser({ username: res.data.name }));
+    });
     navigate("/");
   };
 
