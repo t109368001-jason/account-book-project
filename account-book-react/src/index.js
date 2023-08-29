@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -12,6 +12,7 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from "@mui/material";
+import "./i18n";
 
 const store = configureStore({
   reducer: {
@@ -28,7 +29,9 @@ root.render(
       <Provider store={store}>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            <App />
+            <Suspense fallback={"Loading..."}>
+              <App />
+            </Suspense>
           </ThemeProvider>
         </StyledEngineProvider>
       </Provider>

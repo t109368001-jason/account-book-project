@@ -4,8 +4,10 @@ import { setUser } from "../UserSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/UserService";
+import { useTranslation } from "react-i18next";
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,7 +23,7 @@ const LoginPage = () => {
   return (
     <>
       <Button color="inherit" onClick={handleLoginClick}>
-        Login
+        {t("main.login")}
       </Button>
     </>
   );
