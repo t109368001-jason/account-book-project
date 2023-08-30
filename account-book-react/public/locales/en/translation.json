@@ -3,6 +3,7 @@
     "login": "Login",
     "logout": "Logout",
     "username": "Username",
-    "password": "Password"
+    "password": "Password",
+    "invalidNamePass": "invalid username or password"
   }
 }

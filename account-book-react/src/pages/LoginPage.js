@@ -28,7 +28,7 @@ const LoginPage = () => {
         navigate("/");
       })
       .catch(() => {
-        setError("invalid username or password");
+        setError(t("main.invalidNamePass"));
       });
   };
 

@@ -7,4 +7,10 @@ i18n.use(Backend).use(LanguageDetector).use(initReactI18next).init({
   debug: true,
   fallbackLng: "en",
 });
+
+export const locales = {
+  en: { title: "English" },
+  "zh-TW": { title: "中文" },
+};
+
 export default i18n;
