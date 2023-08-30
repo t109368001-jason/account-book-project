@@ -1,6 +1,8 @@
 {
   "main": {
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password"
   }
 }

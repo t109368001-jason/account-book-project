@@ -68,6 +68,9 @@ const Header = () => {
         vertical: "top",
         horizontal: "left",
       }}
+      MenuListProps={{
+        sx: { "& > :not(style)": { justifyContent: "center" } },
+      }}
     >
       {Object.keys(locales).map((locale) => (
         <MenuItem
@@ -76,7 +79,6 @@ const Header = () => {
             i18n.changeLanguage(locale);
             handleLanMenuClose();
           }}
-          sx={{ justifyContent: "center" }}
         >
           {locales[locale].title}
         </MenuItem>
@@ -99,9 +101,12 @@ const Header = () => {
         vertical: "top",
         horizontal: "left",
       }}
+      MenuListProps={{
+        sx: { "& > :not(style)": { justifyContent: "center" } },
+      }}
     >
       {user.loggedIn && (
-        <MenuItem sx={{ justifyContent: "center" }}>
+        <MenuItem>
           <Typography>{user.name}</Typography>
         </MenuItem>
       )}
@@ -109,7 +114,6 @@ const Header = () => {
         onClick={() => {
           handleUserMenuClose();
         }}
-        sx={{ justifyContent: "center" }}
       >
         {user.loggedIn ? (
           <>

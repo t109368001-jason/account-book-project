@@ -36,15 +36,11 @@ const LoginPage = () => {
     <>
       <Typography variant="h4">{t("main.login")}</Typography>
       <Box display="flex" flexDirection="column">
-        <FormControl
-          sx={{
-            "& > :not(style)": { my: 2 },
-          }}
-        >
+        <FormControl sx={{ "& > :not(style)": { my: 2 } }}>
           <TextField
             autoFocus={true}
             value={form.username}
-            label={"Username"}
+            label={t("main.username")}
             onChange={(event) => {
               setForm((form) => ({
                 ...form,
@@ -54,7 +50,7 @@ const LoginPage = () => {
           />
           <TextField
             value={form.password}
-            label={"Password"}
+            label={t("main.password")}
             onChange={(event) => {
               setForm((form) => ({
                 ...form,
