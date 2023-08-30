@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../services/UserService";
 import { useTranslation } from "react-i18next";
 import { AccountCircle, Language } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const locales = {
   en: { title: "English" },
@@ -25,6 +25,7 @@ const Header = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
   const [lanMenuAnchorEl, setLanMenuAnchorEl] = useState(null);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
   const lanMenuOpen = Boolean(lanMenuAnchorEl);
@@ -48,6 +49,7 @@ const Header = () => {
   const handleLogoutClick = () => {
     logout().then(() => {
       dispatch(clearUser());
+      navigate("/login");
     });
   };
 

@@ -8,7 +8,7 @@ const api = axios.create({
 
 api.interceptors.response.use(
   (res) => {
-    console.log(`${res.config.url}`, res.data);
+    console.log(`${res.config.url}`, { data: res.data });
     return Promise.resolve(res);
   },
   (error) => {

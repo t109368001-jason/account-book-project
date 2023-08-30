@@ -1,5 +1,12 @@
-import React from "react";
-import { Button } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { setUser } from "../features/user/UserSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,21 +17,66 @@ const LoginPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [form, setForm] = useState({ username: "", password: "" });
+  const [error, setError] = useState(undefined);
 
   const handleLoginClick = () => {
-    const username = "admin";
-    const password = "admin";
-    login({ username, password }).then((res) => {
-      dispatch(setUser({ username: res.data.name }));
-    });
-    navigate("/");
+    setError(undefined);
+    login(form)
+      .then((res) => {
+        dispatch(setUser(res.data));
+        navigate("/");
+      })
+      .catch(() => {
+        setError("invalid username or password");
+      });
   };
 
   return (
     <>
-      <Button color="inherit" onClick={handleLoginClick}>
-        {t("main.login")}
-      </Button>
+      <Typography variant="h4">{t("main.login")}</Typography>
+      <Box display="flex" flexDirection="column">
+        <FormControl
+          sx={{
+            "& > :not(style)": { my: 2 },
+          }}
+        >
+          <TextField
+            autoFocus={true}
+            value={form.username}
+            label={"Username"}
+            onChange={(event) => {
+              setForm((form) => ({
+                ...form,
+                username: event.target.value,
+              }));
+            }}
+          />
+          <TextField
+            value={form.password}
+            label={"Password"}
+            onChange={(event) => {
+              setForm((form) => ({
+                ...form,
+                password: event.target.value,
+              }));
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleLoginClick();
+              }
+            }}
+          />
+          <Button
+            color="inherit"
+            onClick={handleLoginClick}
+            variant="contained"
+          >
+            {t("main.login")}
+          </Button>
+          <FormHelperText error={error !== undefined}>{error}</FormHelperText>
+        </FormControl>
+      </Box>
     </>
   );
 };
