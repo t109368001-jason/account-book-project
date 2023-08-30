@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@mui/material";
-import { setUser } from "../UserSlice";
+import { setUser } from "../features/user/UserSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/UserService";

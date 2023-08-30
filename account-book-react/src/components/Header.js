@@ -8,7 +8,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { clearUser, selectUser } from "../UserSlice";
+import { clearUser, selectUser } from "../features/user/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../services/UserService";
 import { useTranslation } from "react-i18next";
@@ -26,6 +26,7 @@ const Header = () => {
   const user = useSelector(selectUser);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  console.log({ user });
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -87,9 +88,11 @@ const Header = () => {
             </Button>
           </>
         ) : (
-          <Button color="inherit" to={"/login"} component={Link}>
-            {t("main.login")}
-          </Button>
+          <>
+            <Button color="inherit" to={"/login"} component={Link}>
+              {t("main.login")}
+            </Button>
+          </>
         )}
       </Toolbar>
     </AppBar>

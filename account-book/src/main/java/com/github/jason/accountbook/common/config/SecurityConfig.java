@@ -1,6 +1,7 @@
 package com.github.jason.accountbook.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.jason.accountbook.record.controllers.RecordController;
 import com.github.jason.accountbook.user.controllers.UserController;
 import java.util.List;
 import lombok.ToString;
@@ -66,12 +67,16 @@ public class SecurityConfig {
                 )
                 .permitAll()
                 .requestMatchers( //
-                    UserController.PATH_PREFIX + UserController.INDEX_PATH //
+                    UserController.PATH_PREFIX + UserController.INDEX_PATH, //
+                    RecordController.PATH_PREFIX + RecordController.INDEX_PATH //
                 )
                 .authenticated()
                 .anyRequest()
                 .hasRole("ADMIN"))
-        .oauth2Login(oauth2 -> Customizer.withDefaults())
+        .oauth2Login(oauth2 -> oauth2.successHandler((request, response, authentication) -> {
+          response.setContentType("application/json");
+          response.getWriter().write(mapper.writeValueAsString(authentication));
+        }))
         .formLogin(login -> login.successHandler((request, response, authentication) -> {
           response.setContentType("application/json");
           response.getWriter().write(mapper.writeValueAsString(authentication));
