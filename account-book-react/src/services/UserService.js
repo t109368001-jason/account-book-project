@@ -1,15 +1,13 @@
 import api from "../api";
 
 export const login = ({ username = String, password = String }) => {
-  return api
-    .post(
-      "/login",
-      { username, password },
-      {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      },
-    )
-    .then(getUser);
+  return api.post(
+    "/login",
+    { username, password },
+    {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    },
+  );
 };
 
 export const logout = () => {
