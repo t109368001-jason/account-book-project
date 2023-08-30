@@ -1,4 +1,4 @@
-package com.github.jason.accountbook.service;
+package com.github.jason.accountbook.common.services;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,7 +12,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.io.FileSystemResource;
@@ -20,34 +24,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 @SuppressWarnings("ALL")
 @Service
 @Slf4j
 public class LogFileService {
-  
+
   public final Path logFileFolder = Paths.get("./logs");
-  
+
   public LogFileService() {
     log.info("new instance={}", this);
   }
-  
+
   @Data
   @AllArgsConstructor
   @NoArgsConstructor
   @Builder
   public static class LogFile {
+
     private String name;
     private String size;
     private FileTime lastModified;
     private String path;
   }
-  
+
   public Set<LogFile> info(String filter) {
     log.debug("info() start, filter={}", filter);
     final Set<LogFile> logFileList;
@@ -57,22 +56,22 @@ public class LogFileService {
         fileStream = fileStream.filter(p -> StringUtils.containsIgnoreCase(p.toString(), filter));
       }
       logFileList = fileStream.map(a -> toLogFileVo(a))
-                              .sorted(Comparator.comparing(LogFile::getName))
-                              .collect(Collectors.toSet());
+          .sorted(Comparator.comparing(LogFile::getName))
+          .collect(Collectors.toSet());
     } catch (IOException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot open file");
     }
     log.debug("info() end, logFileList={}", logFileList);
     return logFileList;
   }
-  
+
   public FileSystemResource download(String fileName) {
     log.debug("download() start, fileName={}", fileName);
     final FileSystemResource resource = new FileSystemResource(logFileFolder.resolve(fileName));
     log.debug("download() end, resource={}", resource);
     return resource;
   }
-  
+
   public void delete(String fileName) {
     log.debug("delete() start, fileName={}", fileName);
     try {
@@ -82,7 +81,7 @@ public class LogFileService {
     }
     log.debug("delete() end");
   }
-  
+
   String humanReadableByteCount(long bytes, boolean si) {
     int unit = si ? 1000 : 1024;
     if (bytes < unit) {
@@ -92,7 +91,7 @@ public class LogFileService {
     String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
     return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
   }
-  
+
   private LogFile toLogFileVo(Path file) {
     final long size;
     final FileTime lastModifiedTime;
@@ -103,14 +102,14 @@ public class LogFileService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot open file");
     }
     return LogFile.builder()
-                  .name(file.getFileName()
-                            .toString())
-                  .size(humanReadableByteCount(size, true))
-                  .lastModified(lastModifiedTime)
-                  .path(file.toString())
-                  .build();
+        .name(file.getFileName()
+            .toString())
+        .size(humanReadableByteCount(size, true))
+        .lastModified(lastModifiedTime)
+        .path(file.toString())
+        .build();
   }
-  
+
   /**
    * check file > 10MB can't view online
    */
@@ -128,7 +127,7 @@ public class LogFileService {
     }
     return true;
   }
-  
+
   public static byte[] zipBytes(String fileName, byte[] input) {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     ZipOutputStream zos = new ZipOutputStream(baos);
@@ -144,5 +143,5 @@ public class LogFileService {
     }
     return baos.toByteArray();
   }
-  
+
 }

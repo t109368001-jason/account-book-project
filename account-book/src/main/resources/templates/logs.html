@@ -2,49 +2,50 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       lang="en">
 <head>
-    <title th:text="${appName}">Demo Server</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+  <title th:text="${appName}">Demo Server</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
 
 <header th:insert="~{fragments/header.html :: header}"></header>
 
 <div class="container-fluid">
-    <div th:if="${logs != null}">
-        <div class="row">
-            <div class="col">
-                <div class="table-responsive text-nowrap">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th>File Name</th>
-                            <th>File Size</th>
-                            <th>Last Modified</th>
-                            <th>View(less than 10MB)</th>
-                            <th>Download ZIP</th>
-                            <th>Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="item : ${logs}">
-                            <td th:text="${item.name}"></td>
-                            <td th:text="${item.size}"></td>
-                            <td th:text="${item.lastModified}"></td>
-                            <td><a class="btn btn-primary" th:href="@{'/logs/view/'+${item.name}}" th:text="view"></a>
-                            </td>
-                            <td><a class="btn btn-primary" th:href="@{'/logs/download/'+${item.name}}"
-                                   th:text="download"></a></td>
-                            <td><a class="btn btn-danger" th:href="@{'/logs/delete/'+${item.name}}"
-                                   th:text="delete"></a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <div th:if="${logs != null}">
+    <div class="row">
+      <div class="col">
+        <div class="table-responsive text-nowrap">
+          <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+              <th>File Name</th>
+              <th>File Size</th>
+              <th>Last Modified</th>
+              <th>View(less than 10MB)</th>
+              <th>Download ZIP</th>
+              <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${logs}">
+              <td th:text="${item.name}"></td>
+              <td th:text="${item.size}"></td>
+              <td th:text="${item.lastModified}"></td>
+              <td><a class="btn btn-primary" th:href="@{'/logs/view/'+${item.name}}"
+                     th:text="view"></a>
+              </td>
+              <td><a class="btn btn-primary" th:href="@{'/logs/download/'+${item.name}}"
+                     th:text="download"></a></td>
+              <td><a class="btn btn-danger" th:href="@{'/logs/delete/'+${item.name}}"
+                     th:text="delete"></a></td>
+            </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 </body>
