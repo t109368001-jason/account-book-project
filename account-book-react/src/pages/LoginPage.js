@@ -4,6 +4,7 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -33,47 +34,53 @@ const LoginPage = () => {
   };
 
   return (
-    <>
-      <Typography variant="h4">{t("main.login")}</Typography>
-      <Box display="flex" flexDirection="column">
-        <FormControl sx={{ "& > :not(style)": { my: 2 } }}>
-          <TextField
-            autoFocus={true}
-            value={form.username}
-            label={t("main.username")}
-            onChange={(event) => {
-              setForm((form) => ({
-                ...form,
-                username: event.target.value,
-              }));
-            }}
-          />
-          <TextField
-            value={form.password}
-            label={t("main.password")}
-            onChange={(event) => {
-              setForm((form) => ({
-                ...form,
-                password: event.target.value,
-              }));
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleLoginClick();
-              }
-            }}
-          />
-          <Button
-            color="inherit"
-            onClick={handleLoginClick}
-            variant="contained"
-          >
-            {t("main.login")}
-          </Button>
-          <FormHelperText error={error !== undefined}>{error}</FormHelperText>
-        </FormControl>
-      </Box>
-    </>
+    <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
+      <Paper sx={{ borderRadius: 2 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
+          <Typography variant="h4">{t("main.login")}</Typography>
+          <Box display="flex" flexDirection="column">
+            <FormControl sx={{ "& > :not(style)": { my: 2 } }}>
+              <TextField
+                autoFocus={true}
+                value={form.username}
+                label={t("main.username")}
+                onChange={(event) => {
+                  setForm((form) => ({
+                    ...form,
+                    username: event.target.value,
+                  }));
+                }}
+              />
+              <TextField
+                value={form.password}
+                label={t("main.password")}
+                onChange={(event) => {
+                  setForm((form) => ({
+                    ...form,
+                    password: event.target.value,
+                  }));
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleLoginClick();
+                  }
+                }}
+              />
+              <Button
+                color="inherit"
+                onClick={handleLoginClick}
+                variant="contained"
+              >
+                {t("main.login")}
+              </Button>
+              <FormHelperText error={error !== undefined}>
+                {error}
+              </FormHelperText>
+            </FormControl>
+          </Box>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

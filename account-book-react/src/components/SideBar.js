@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Box,
   Drawer,
@@ -11,15 +11,20 @@ import {
 } from "@mui/material";
 import { Apps as AppsIcon, Receipt as ReceiptIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const drawerWidth = 240;
 
 const SideBar = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  const items = [
-    { text: "Overview", path: "", icon: AppsIcon },
-    { text: "Record", path: "record", icon: ReceiptIcon },
-  ];
+  const items = useMemo(
+    () => [
+      { text: t("main.overview"), path: "", icon: AppsIcon },
+      { text: t("main.record"), path: "record", icon: ReceiptIcon },
+    ],
+    [],
+  );
 
   const handleClick = (path) => {
     navigate(path);

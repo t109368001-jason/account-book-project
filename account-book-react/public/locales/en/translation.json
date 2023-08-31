@@ -4,6 +4,10 @@
     "logout": "Logout",
     "username": "Username",
     "password": "Password",
-    "invalidNamePass": "invalid username or password"
+    "invalidNamePass": "invalid username or password",
+    "overview": "Overview",
+    "record": "Record",
+    "id": "Id",
+    "price": "Price"
   }
 }

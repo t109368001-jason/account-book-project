@@ -7,7 +7,10 @@ const AccountBookPage = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, "& > :not(style)": { mb: 2 } }}
+      >
         <Outlet />
       </Box>
     </Box>
