@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import Header from "./components/Header";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import IndexPage from "./pages/IndexPage";
 import LoginPage from "./pages/LoginPage";
 import RecordPage from "./pages/RecordPage";
 import { useDispatch } from "react-redux";
 import { setUser } from "./features/user/UserSlice";
 import { getUser } from "./services/UserService";
-import { Box } from "@mui/material";
-
-const bodyMargin = 2;
+import AccountBookPage from "./pages/AccountBookPage";
+import ABOverview from "./pages/ABOverview";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,19 +22,16 @@ function App() {
   return (
     <>
       <Header />
-      <Box
-        sx={{
-          width: `calc(100% - ${bodyMargin}rem)`,
-          height: `calc(100% - ${bodyMargin}rem)`,
-          m: bodyMargin,
-        }}
-      >
-        <Routes>
-          <Route path={"/login"} element={<LoginPage />} />
-          <Route path={"/record"} element={<RecordPage />} />
-          <Route path={"*"} element={<IndexPage />} />
-        </Routes>
-      </Box>
+      <Routes>
+        <Route index element={<IndexPage />} />
+        <Route path={"login"} element={<LoginPage />} />
+        <Route path={"account-book"} element={<AccountBookPage />}>
+          <Route index element={<ABOverview />} />
+          <Route path={"record"} element={<RecordPage />} />
+          <Route path={"*"} element={<Navigate to="" />} />
+        </Route>
+        <Route path={"*"} element={<Navigate to="" />} />
+      </Routes>
     </>
   );
 }

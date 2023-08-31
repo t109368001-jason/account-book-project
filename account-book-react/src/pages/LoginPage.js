@@ -25,7 +25,7 @@ const LoginPage = () => {
     login(form)
       .then((res) => {
         dispatch(setUser(res.data));
-        navigate("/");
+        navigate("/account-book");
       })
       .catch(() => {
         setError(t("main.invalidNamePass"));

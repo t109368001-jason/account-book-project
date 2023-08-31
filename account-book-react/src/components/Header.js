@@ -5,7 +5,10 @@ import UserMenu from "./UserMenu";
 
 const Header = () => {
   return (
-    <AppBar position={"relative"}>
+    <AppBar
+      position={"relative"}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <Toolbar>
         <Typography>Account Book</Typography>
         <Box sx={{ flexGrow: 1 }} />
