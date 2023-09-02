@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "18080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+  account-book:
+    image: jason/account-book
+    build:
+      context: account-book
+    ports:
+      - "18081:80"
+    environment:
+      - SERVER_PORT=80
+      - CORS_ORIGINS_0=http://localhost:18080
+    depends_on:
+      - nginx
+  account-book-react:
+    image: json/account-book-react
+    build:
+      context: account-book-react
+    ports:
+      - "18082:80"
+    depends_on:
+      - nginx
+      - account-book
