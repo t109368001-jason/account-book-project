@@ -9,30 +9,25 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { setUser } from "../features/user/UserSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { login } from "../services/UserService";
+import { selectUser } from "../features/user/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../features/user/UserApi";
 import { useTranslation } from "react-i18next";
 import oauth2s from "../constants/oauth2";
+import { Navigate } from "react-router-dom";
 
 const LoginPage = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const [form, setForm] = useState({ username: "", password: "" });
-  const [error, setError] = useState(undefined);
+
+  if (user.loggedIn) {
+    return <Navigate to={"/account-book"} />;
+  }
 
   const handleLoginClick = () => {
-    setError(undefined);
-    login(form)
-      .then((res) => {
-        dispatch(setUser(res.data));
-        navigate("/account-book");
-      })
-      .catch(() => {
-        setError(t("main.invalidNamePass"));
-      });
+    dispatch(login(form));
   };
 
   return (
@@ -79,8 +74,8 @@ const LoginPage = () => {
               >
                 {t("main.login")}
               </Button>
-              <FormHelperText error={error !== undefined}>
-                {error}
+              <FormHelperText error={user.error !== undefined}>
+                {t(user.error)}
               </FormHelperText>
             </FormControl>
             <Divider>or</Divider>

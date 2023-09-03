@@ -1,9 +1,15 @@
 import React from "react";
 import SideBar from "../components/SideBar";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { Box } from "@mui/material";
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/user/UserSlice";
 
 const AccountBookPage = () => {
+  const user = useSelector(selectUser);
+  if (!user.loggedIn) {
+    return <Navigate to={"/login"} />;
+  }
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />

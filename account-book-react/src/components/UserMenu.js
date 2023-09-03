@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
-import { clearUser, selectUser } from "../features/user/UserSlice";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import { selectUser } from "../features/user/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../services/UserService";
+import { logout } from "../features/user/UserApi";
 import { useTranslation } from "react-i18next";
 import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -24,10 +24,8 @@ const UserMenu = () => {
 
   const handleLogoutClick = () => {
     handleClose();
-    logout().then(() => {
-      dispatch(clearUser());
-      navigate("/login");
-    });
+    dispatch(logout());
+    navigate("/login");
   };
 
   const handleLoginClick = () => {
@@ -56,19 +54,16 @@ const UserMenu = () => {
           sx: { "& > :not(style)": { justifyContent: "center" } },
         }}
       >
-        {!user.loggedIn ? (
+        {!user.loggedIn && (
           <MenuItem id="user-menu-logout" onClick={handleLoginClick}>
             {t("main.login")}
           </MenuItem>
-        ) : (
-          <>
-            <MenuItem id="user-menu-name">
-              <Typography>{user.name}</Typography>
-            </MenuItem>
-            <MenuItem id="user-menu-login" onClick={handleLogoutClick}>
-              {t("main.logout")}
-            </MenuItem>
-          </>
+        )}
+        {user.loggedIn && <MenuItem id="user-menu-name">{user.name}</MenuItem>}
+        {user.loggedIn && (
+          <MenuItem id="user-menu-login" onClick={handleLogoutClick}>
+            {t("main.logout")}
+          </MenuItem>
         )}
       </Menu>
     </>
