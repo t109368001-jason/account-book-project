@@ -4,7 +4,7 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "18080:80"
+      - "28080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
   account-book:
@@ -12,10 +12,14 @@ services:
     build:
       context: account-book
     ports:
-      - "18081:80"
+      - "28081:80"
     environment:
       - SERVER_PORT=80
-      - CORS_ORIGINS_0=http://localhost:18080
+      - CORS_ORIGINS_0=http://localhost:28080
+      - OAUTH2_AUTHORIZED_REDIRECT_URIS=http://localhost:28080
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REDIRECT_URI=http://localhost:28080/api/login/oauth2/code/google
     depends_on:
       - nginx
   account-book-react:
@@ -23,7 +27,7 @@ services:
     build:
       context: account-book-react
     ports:
-      - "18082:80"
+      - "28082:80"
     depends_on:
       - nginx
       - account-book

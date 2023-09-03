@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   FormHelperText,
   Paper,
@@ -13,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/UserService";
 import { useTranslation } from "react-i18next";
+import oauth2s from "../constants/oauth2";
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -38,7 +40,11 @@ const LoginPage = () => {
       <Paper sx={{ borderRadius: 2 }}>
         <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
           <Typography variant="h4">{t("main.login")}</Typography>
-          <Box display="flex" flexDirection="column">
+          <Box
+            display="flex"
+            flexDirection="column"
+            sx={{ "& > :not(style)": { my: 2 } }}
+          >
             <FormControl sx={{ "& > :not(style)": { my: 2 } }}>
               <TextField
                 autoFocus={true}
@@ -67,7 +73,7 @@ const LoginPage = () => {
                 }}
               />
               <Button
-                color="inherit"
+                // color="inherit"
                 onClick={handleLoginClick}
                 variant="contained"
               >
@@ -77,6 +83,17 @@ const LoginPage = () => {
                 {error}
               </FormHelperText>
             </FormControl>
+            <Divider>or</Divider>
+            {oauth2s.map((oauth2, index) => (
+              <Button
+                key={index}
+                variant="outlined"
+                startIcon={<oauth2.icon />}
+                href={oauth2.path}
+              >
+                {oauth2.title}
+              </Button>
+            ))}
           </Box>
         </Box>
       </Paper>

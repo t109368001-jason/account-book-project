@@ -32,8 +32,16 @@ public class SecurityConfig {
 
   private final ObjectMapper mapper;
 
-  public SecurityConfig(final ObjectMapper mapper) {
+  private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
+
+  private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+  public SecurityConfig(final ObjectMapper mapper,
+      final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository,
+      final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler) {
     this.mapper = mapper;
+    this.authorizationRequestRepository = authorizationRequestRepository;
+    this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
 
     log.info("new instance={}", this);
   }
@@ -74,10 +82,14 @@ public class SecurityConfig {
                 .authenticated()
                 .anyRequest()
                 .hasRole("ADMIN"))
-        .oauth2Login(oauth2 -> oauth2.successHandler((request, response, authentication) -> {
-          response.setContentType("application/json");
-          response.getWriter().write(mapper.writeValueAsString(authentication));
-        }))
+        .oauth2Login(oauth2 -> oauth2 //
+            .authorizationEndpoint(
+                authorizationEndpointConfig -> authorizationEndpointConfig.authorizationRequestRepository(
+                    authorizationRequestRepository))
+            .successHandler(oAuth2AuthenticationSuccessHandler)
+            .failureHandler(
+                (request, response, exception) -> authorizationRequestRepository.removeAuthorizationRequestCookies(
+                    request, response)))
         .formLogin(login -> login.failureHandler((request, response, exception) -> {
           response.setStatus(HttpStatus.UNAUTHORIZED.value());
           response.setContentType("application/json");

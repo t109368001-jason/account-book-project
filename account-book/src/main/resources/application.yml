@@ -22,6 +22,7 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: ${GOOGLE_REDIRECT_URI:{baseUrl}/login/oauth2/code/{registrationId}}
 
 server:
   port: ${SERVER_PORT:18080}
@@ -30,4 +31,8 @@ server:
 
 cors:
   origins:
+    - "http://localhost:3000"
+
+oauth2:
+  authorizedRedirectUris:
     - "http://localhost:3000"

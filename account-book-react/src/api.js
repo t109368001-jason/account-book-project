@@ -2,7 +2,9 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL:
-    process.env.NODE_ENV === "prod" ? "/api" : "http://localhost:18080/api",
+    process.env.NODE_ENV === "production"
+      ? "/api"
+      : "http://localhost:18080/api",
   headers: { "Content-Type": "application/json", Accept: "application/json" },
   withCredentials: true,
 });
