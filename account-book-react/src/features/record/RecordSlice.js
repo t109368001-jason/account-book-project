@@ -22,13 +22,14 @@ export const recordSlice = createSlice({
       state.search = action.payload;
     },
   },
-  extraReducers: {
-    [getRecords.fulfilled]: (state, { payload }) => {
-      state.data = payload.data;
-    },
-    [getRecords.rejected]: (state) => {
-      state.data = {};
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getRecords.fulfilled, (state, { payload }) => {
+        state.data = payload.data;
+      })
+      .addCase(getRecords.rejected, (state) => {
+        state.data = {};
+      });
   },
 });
 

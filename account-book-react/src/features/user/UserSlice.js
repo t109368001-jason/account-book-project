@@ -21,16 +21,17 @@ export const userSlice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {},
-  extraReducers: {
-    [getUser.fulfilled]: handelAuthenticationResponse,
-    [getUser.rejected]: () => initialState,
-    [login.fulfilled]: handelAuthenticationResponse,
-    [login.rejected]: (state) => {
-      state.loggedIn = false;
-      state.error = "main.invalidNamePass";
-    },
-    [logout.fulfilled]: () => initialState,
-    [logout.rejected]: () => initialState,
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUser.fulfilled, handelAuthenticationResponse)
+      .addCase(getUser.rejected, () => initialState)
+      .addCase(login.fulfilled, handelAuthenticationResponse)
+      .addCase(login.rejected, (state) => {
+        state.loggedIn = false;
+        state.error = "main.invalidNamePass";
+      })
+      .addCase(logout.fulfilled, () => initialState)
+      .addCase(logout.rejected, () => initialState);
   },
 });
 
