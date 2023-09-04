@@ -1,4 +1,7 @@
 export const commonStyles = {
+  mb2ExcludeLast: {
+    "& > :not(:last-child)": { mb: 2 },
+  },
   mb4ExcludeLast: {
     "& > :not(:last-child)": { mb: 4 },
   },
