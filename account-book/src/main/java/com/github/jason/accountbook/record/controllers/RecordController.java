@@ -1,7 +1,7 @@
 package com.github.jason.accountbook.record.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jason.accountbook.common.util.SpecificationsBuilder;
+import com.github.jason.accountbook.common.util.GenericSpecificationsBuilder;
 import com.github.jason.accountbook.common.vo.SpecSearchParam;
 import com.github.jason.accountbook.record.entity.Record;
 import com.github.jason.accountbook.record.repositories.RecordRepo;
@@ -47,7 +47,8 @@ public class RecordController {
     log.info("[REQ] findBySpecAndPage() param={}, pageable={}", param, pageable);
     final Page<Record> res;
     if (StringUtils.isNotBlank(param.getSearch())) {
-      final Specification<Record> spec = SpecificationsBuilder.build(param, Record.class, mapper);
+      final Specification<Record> spec = GenericSpecificationsBuilder.build(param.getSearch(),
+          Record.class, mapper);
       res = repo.findAll(spec, pageable);
     } else {
       res = repo.findAll(pageable);

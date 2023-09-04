@@ -14,9 +14,6 @@ import org.springdoc.core.annotations.ParameterObject;
 @ParameterObject
 public class SpecSearchParam {
 
-  @Parameter(description = "use OR predicate, default:false")
-  private Boolean orPredicate = false;
-
   @Parameter(description = "specification search string")
   private String search;
 

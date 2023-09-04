@@ -14,13 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 @Data
-public class ABSpecification<T> implements Specification<T> {
+public class GenericSpecification<T> implements Specification<T> {
 
   private final Class<T> tClass;
   private final ObjectMapper mapper;
   private SpecSearchCriteria criteria;
 
-  public ABSpecification(Class<T> tClass, final ObjectMapper mapper,
+  public GenericSpecification(Class<T> tClass, final ObjectMapper mapper,
       final SpecSearchCriteria criteria) {
     super();
     this.tClass = tClass;
