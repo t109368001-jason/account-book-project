@@ -4,7 +4,6 @@ import {
   Button,
   Divider,
   FormControl,
-  FormHelperText,
   Paper,
   TextField,
   Typography,
@@ -15,6 +14,7 @@ import { login } from "../features/user/UserApi";
 import { useTranslation } from "react-i18next";
 import oauth2s from "../constants/oauth2";
 import { Navigate } from "react-router-dom";
+import { commonStyles, paperStyles } from "../app/styles";
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -31,68 +31,61 @@ const LoginPage = () => {
   };
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
-      <Paper sx={{ borderRadius: 2 }}>
-        <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
-          <Typography variant="h4">{t("main.login")}</Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            sx={{ "& > :not(style)": { my: 2 } }}
+    <>
+      <Box />
+      <Paper sx={paperStyles.absoluteCenter}>
+        <Typography variant="h4">{t("main.login")}</Typography>
+        <FormControl fullWidth sx={commonStyles.mb4ExcludeLast}>
+          <TextField
+            autoFocus={true}
+            value={form.username}
+            label={t("main.username")}
+            error={user.error !== undefined}
+            onChange={(event) => {
+              setForm((form) => ({
+                ...form,
+                username: event.target.value,
+              }));
+            }}
+          />
+          <TextField
+            value={form.password}
+            label={t("main.password")}
+            error={user.error !== undefined}
+            helperText={t(user.error)}
+            onChange={(event) => {
+              setForm((form) => ({
+                ...form,
+                password: event.target.value,
+              }));
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleLoginClick();
+              }
+            }}
+          />
+          <Button
+            // color="inherit"
+            onClick={handleLoginClick}
+            variant="contained"
           >
-            <FormControl sx={{ "& > :not(style)": { my: 2 } }}>
-              <TextField
-                autoFocus={true}
-                value={form.username}
-                label={t("main.username")}
-                onChange={(event) => {
-                  setForm((form) => ({
-                    ...form,
-                    username: event.target.value,
-                  }));
-                }}
-              />
-              <TextField
-                value={form.password}
-                label={t("main.password")}
-                onChange={(event) => {
-                  setForm((form) => ({
-                    ...form,
-                    password: event.target.value,
-                  }));
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleLoginClick();
-                  }
-                }}
-              />
-              <Button
-                // color="inherit"
-                onClick={handleLoginClick}
-                variant="contained"
-              >
-                {t("main.login")}
-              </Button>
-              <FormHelperText error={user.error !== undefined}>
-                {t(user.error)}
-              </FormHelperText>
-            </FormControl>
-            <Divider>or</Divider>
-            {oauth2s.map((oauth2, index) => (
-              <Button
-                key={index}
-                variant="outlined"
-                startIcon={<oauth2.icon />}
-                href={oauth2.path}
-              >
-                {oauth2.title}
-              </Button>
-            ))}
-          </Box>
-        </Box>
+            {t("main.login")}
+          </Button>
+          <Divider>or</Divider>
+          {oauth2s.map((oauth2, index) => (
+            <Button
+              key={index}
+              variant="outlined"
+              startIcon={<oauth2.icon />}
+              href={oauth2.path}
+            >
+              {oauth2.title}
+            </Button>
+          ))}
+        </FormControl>
       </Paper>
-    </Box>
+    </>
   );
 };
 

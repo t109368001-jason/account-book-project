@@ -1,12 +1,47 @@
+import PropTypes from "prop-types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api";
+import moment from "moment";
+
+export const addRecord = (props) => {
+  const priceAmount = props?.price?.amount || props.priceAmount;
+  const priceCurrency = props?.price?.currency || props.priceCurrency;
+  let timestamp = props.timestamp;
+  if (isNaN(timestamp)) {
+    timestamp = Number(moment(timestamp).format("x"));
+  }
+  return api.post("/records", {
+    price: {
+      amount: priceAmount,
+      currency: priceCurrency,
+    },
+    timestamp: timestamp,
+  });
+};
+
+addRecord.propTypes = PropTypes.oneOf([
+  {
+    price: PropTypes.shape({
+      amount: PropTypes.oneOf([PropTypes.number, PropTypes.string]).isRequired,
+      currency: PropTypes.string.isRequired,
+    }),
+    timestamp: PropTypes.oneOf([PropTypes.number, PropTypes.string]).isRequired,
+  },
+  {
+    priceAmount: PropTypes.oneOf([PropTypes.number, PropTypes.string])
+      .isRequired,
+    PriceCurrency: PropTypes.string.isRequired,
+    timestamp: PropTypes.oneOf([PropTypes.number, PropTypes.string]).isRequired,
+  },
+]);
 
 export const getRecords = createAsyncThunk(
   "records/getRecords",
-  ({ page = 0, size = 10, search }) => {
-    let url = `/records?page=${page}&size=${size}`;
-    if (search) {
-      url += `&search=${search}`;
+  (_, { getState }) => {
+    const state = getState();
+    let url = `/recordsa?page=${state.records.page}&size=${state.records.size}`;
+    if (state.records.search) {
+      url += `&search=${state.records.search}`;
     }
     return api.get(url);
   },

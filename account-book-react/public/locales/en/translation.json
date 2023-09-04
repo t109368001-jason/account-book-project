@@ -1,13 +1,18 @@
 {
   "main": {
+    "add": "Add",
+    "addNewRecord": "Add New Record",
+    "amount": "Amount",
+    "currency": "Currency",
+    "id": "Id",
+    "invalidNamePass": "invalid username or password",
     "login": "Login",
     "logout": "Logout",
-    "username": "Username",
-    "password": "Password",
-    "invalidNamePass": "invalid username or password",
     "overview": "Overview",
+    "password": "Password",
+    "price": "Price",
     "record": "Record",
-    "id": "Id",
-    "price": "Price"
+    "time": "Time",
+    "username": "Username"
   }
 }

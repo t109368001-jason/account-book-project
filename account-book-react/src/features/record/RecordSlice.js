@@ -6,7 +6,6 @@ const initialState = {
   size: 10,
   search: null,
   data: {},
-  loading: false,
 };
 export const recordSlice = createSlice({
   name: "records",
@@ -24,15 +23,11 @@ export const recordSlice = createSlice({
     },
   },
   extraReducers: {
-    [getRecords.pending]: (state) => {
-      state.loading = true;
-    },
     [getRecords.fulfilled]: (state, { payload }) => {
-      state.loading = false;
       state.data = payload.data;
     },
     [getRecords.rejected]: (state) => {
-      state.loading = false;
+      state.data = {};
     },
   },
 });

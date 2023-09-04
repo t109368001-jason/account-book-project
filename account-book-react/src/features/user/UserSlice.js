@@ -8,8 +8,7 @@ const initialState = {
 };
 
 const handelAuthenticationResponse = (state, { payload }) => {
-  console.log("handelAuthenticationResponse", { payload });
-  if (payload.status !== 200) {
+  if (payload.status !== 200 || payload?.data?.name === undefined) {
     state.loggedIn = false;
     return;
   }

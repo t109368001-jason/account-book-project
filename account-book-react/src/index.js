@@ -9,6 +9,8 @@ import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 import "./i18n";
 import store from "./app/store";
 import theme from "./app/theme";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,9 +19,11 @@ root.render(
       <Provider store={store}>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            <Suspense fallback={"Loading..."}>
-              <App />
-            </Suspense>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <Suspense fallback={"Loading..."}>
+                <App />
+              </Suspense>
+            </LocalizationProvider>
           </ThemeProvider>
         </StyledEngineProvider>
       </Provider>

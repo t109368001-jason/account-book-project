@@ -4,6 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/user/UserSlice";
+import { commonStyles } from "../app/styles";
 
 const AccountBookPage = () => {
   const user = useSelector(selectUser);
@@ -15,7 +16,11 @@ const AccountBookPage = () => {
       <SideBar />
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, "& > :not(style)": { mb: 2 } }}
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          ...commonStyles.mb4ExcludeLast,
+        }}
       >
         <Outlet />
       </Box>
