@@ -22,6 +22,9 @@ public class Record {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false)
+  private String userId;
+
   @Embedded
   @AttributeOverride(
       name = "amount",
