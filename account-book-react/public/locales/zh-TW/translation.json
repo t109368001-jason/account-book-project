@@ -4,6 +4,7 @@
     "addNewRecord": "新增紀錄",
     "amount": "金額",
     "currency": "幣值",
+    "description": "描述",
     "id": "索引",
     "invalidNamePass": "使用者名稱或密碼錯誤",
     "login": "登入",
@@ -11,6 +12,7 @@
     "overview": "總覽",
     "password": "密碼",
     "price": "金額",
+    "purpose": "目的",
     "record": "紀錄",
     "time": "時間",
     "username": "使用者名稱"

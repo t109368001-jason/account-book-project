@@ -4,6 +4,7 @@
     "addNewRecord": "Add New Record",
     "amount": "Amount",
     "currency": "Currency",
+    "description": "Description",
     "id": "Id",
     "invalidNamePass": "invalid username or password",
     "login": "Login",
@@ -11,6 +12,7 @@
     "overview": "Overview",
     "password": "Password",
     "price": "Price",
+    "purpose": "Purpose",
     "record": "Record",
     "time": "Time",
     "username": "Username"

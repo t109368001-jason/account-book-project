@@ -11,11 +11,13 @@ export const addRecord = (props) => {
     timestamp = Number(moment(timestamp).format("x"));
   }
   return api.post("/records", {
+    purpose: props.purpose,
     price: {
       amount: priceAmount,
       currency: priceCurrency,
     },
     timestamp: timestamp,
+    description: props.description,
   });
 };
 

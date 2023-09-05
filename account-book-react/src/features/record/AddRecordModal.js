@@ -19,9 +19,11 @@ import { useTranslation } from "react-i18next";
 import { commonStyles, paperStyles } from "../../app/styles";
 
 const initialForm = {
+  purpose: "",
   priceAmount: "",
   priceCurrency: "TWD",
   time: moment(moment.now()),
+  description: "",
 };
 
 const AddRecordModal = ({ open, setOpen }) => {
@@ -35,9 +37,11 @@ const AddRecordModal = ({ open, setOpen }) => {
 
   const handleAddClick = useCallback(() => {
     addRecord({
+      purpose: form.purpose,
       priceAmount: form.priceAmount,
       priceCurrency: form.priceCurrency,
       timestamp: form.time.format("x"),
+      description: form.description,
     }).then(() => {
       setOpen(false);
       dispatch(getRecords());
@@ -63,6 +67,17 @@ const AddRecordModal = ({ open, setOpen }) => {
           {t("main.addNewRecord")}
         </Typography>
         <FormControl fullWidth sx={commonStyles.mb4ExcludeLast}>
+          <TextField
+            fullWidth
+            value={form.purpose}
+            label={t("main.purpose")}
+            onChange={(event) => {
+              setForm((form) => ({
+                ...form,
+                purpose: event.target.value,
+              }));
+            }}
+          />
           <Box display={"flex"} flexDirection={"row"}>
             <TextField
               fullWidth
@@ -102,6 +117,17 @@ const AddRecordModal = ({ open, setOpen }) => {
               setForm((form) => ({
                 ...form,
                 time: value,
+              }));
+            }}
+          />
+          <TextField
+            fullWidth
+            value={form.description}
+            label={t("main.description")}
+            onChange={(event) => {
+              setForm((form) => ({
+                ...form,
+                description: event.target.value,
               }));
             }}
           />

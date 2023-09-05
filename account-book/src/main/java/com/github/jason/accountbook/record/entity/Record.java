@@ -25,6 +25,8 @@ public class Record {
   @Column(nullable = false)
   private String userId;
 
+  private String purpose;
+
   @Embedded
   @AttributeOverride(
       name = "amount",
@@ -38,5 +40,8 @@ public class Record {
 
   @Column(nullable = false)
   private Long timestamp;
+
+  @Column(columnDefinition = "text")
+  private String description;
 
 }
