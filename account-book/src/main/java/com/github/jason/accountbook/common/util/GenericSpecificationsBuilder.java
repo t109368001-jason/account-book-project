@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class GenericSpecificationsBuilder {
 
   public static final Pattern SPEC_CRITERIA_REGEX = Pattern.compile(
-      "^(\\w+?)(" + SearchOperation.OPERATION_SET_REGEXP + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?)$",
+      "^(\\w+[\\w.]*)?(" + SearchOperation.OPERATION_SET_REGEXP + ")(\\*?)(.+?)(\\*?)$",
       Pattern.UNICODE_CHARACTER_CLASS);
 
   public static <T> Specification<T> build(final String searchParam, final Class<T> tClass,
@@ -23,7 +23,8 @@ public class GenericSpecificationsBuilder {
     return build(parse(searchParam), tClass, mapper);
   }
 
-  protected static Deque<?> parse(final String searchParam) {
+  protected static Deque<?> parse(String searchParam) {
+    searchParam = searchParam.trim();
     final Deque<Object> output = new LinkedList<>();
     final Deque<String> stack = new LinkedList<>();
 
@@ -32,7 +33,8 @@ public class GenericSpecificationsBuilder {
 
       if (StringUtils.equalsAnyIgnoreCase(token, SearchOperation.AND_OPERATOR,
           SearchOperation.OR_OPERATOR)) {
-        while (!stack.isEmpty() && stack.peek().equalsIgnoreCase(SearchOperation.AND_OPERATOR)) {
+        while (!stack.isEmpty() && stack.peek()
+            .equalsIgnoreCase(SearchOperation.AND_OPERATOR)) {
           output.push(stack.pop());
         }
         stack.push(token.equalsIgnoreCase(SearchOperation.OR_OPERATOR) ? SearchOperation.OR_OPERATOR
@@ -54,7 +56,8 @@ public class GenericSpecificationsBuilder {
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid search pattern");
         }
         output.push(new SpecSearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3),
-            matcher.group(4), matcher.group(5)));
+            matcher.group(4),
+            matcher.group(5)));
       }
     }
 
@@ -66,7 +69,8 @@ public class GenericSpecificationsBuilder {
   }
 
   protected static <T> Specification<T> build(final Deque<?> postFixedExprStack,
-      final Class<T> tClass, final ObjectMapper mapper) {
+      final Class<T> tClass,
+      final ObjectMapper mapper) {
     final Deque<Specification<T>> specStack = new LinkedList<>();
     Collections.reverse((List<?>) postFixedExprStack);
 
