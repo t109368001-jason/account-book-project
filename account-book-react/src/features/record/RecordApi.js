@@ -43,7 +43,7 @@ export const getRecords = createAsyncThunk(
     const state = getState();
     let url = `/records?page=${state.records.page}&size=${state.records.size}&sort=${state.records.orderBy}%2C${state.records.direction}`;
     if (state.records.search) {
-      url += `&search=${state.records.search}`;
+      url += `&search=${encodeURI(state.records.search)}`;
     }
     return api.get(url);
   },
