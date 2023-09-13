@@ -42,11 +42,14 @@ public class GenericSpecificationsBuilder {
       } else if (token.equals(SearchOperation.LEFT_PARENTHESES)) {
         stack.push(SearchOperation.LEFT_PARENTHESES);
       } else if (token.equals(SearchOperation.RIGHT_PARENTHESES)) {
-        final String top = stack.peek();
-        if (top == null) {
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid search pattern");
-        }
-        while (!top.equals(SearchOperation.LEFT_PARENTHESES)) {
+        while (true) {
+          final String top = stack.peek();
+          if (top == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid search pattern");
+          }
+          if (top.equals(SearchOperation.LEFT_PARENTHESES)) {
+            break;
+          }
           output.push(stack.pop());
         }
         stack.pop();
