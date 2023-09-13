@@ -4,8 +4,10 @@ import { getRecords } from "./RecordApi";
 const initialState = {
   page: 0,
   size: 10,
+  orderBy: "id",
+  direction: "desc",
   search: null,
-  data: {},
+  data: { content: [], totalElements: 0 },
 };
 export const recordSlice = createSlice({
   name: "records",
@@ -17,6 +19,15 @@ export const recordSlice = createSlice({
     setSize: (state, action) => {
       state.page = 0;
       state.size = action.payload;
+    },
+    setOrderBy: (state, action) => {
+      if (action.payload === "price") {
+        action.payload = "price_amount";
+      }
+      state.orderBy = action.payload;
+    },
+    setDirection: (state, action) => {
+      state.direction = action.payload;
     },
     setSearch: (state, action) => {
       state.search = action.payload;
@@ -33,7 +44,8 @@ export const recordSlice = createSlice({
   },
 });
 
-export const { setPage, setSize, setSearch } = recordSlice.actions;
+export const { setPage, setSize, setOrderBy, setDirection, setSearch } =
+  recordSlice.actions;
 
 export const selectRecords = (state) => state.records;
 
