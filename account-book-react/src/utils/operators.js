@@ -74,6 +74,9 @@ export const getGridStringOperators = ({ t }) => {
 };
 
 export const buildSearchString = ({ field, operator, value }) => {
+  if (!field || !operator || !value) {
+    return "";
+  }
   if (operator === CONTAINS) {
     return `${field}=*${value}*`;
   } else if (operator === STARTS_WITH) {

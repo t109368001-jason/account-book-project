@@ -2,11 +2,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectRecords,
-  setDirection,
-  setOrderBy,
-  setPage,
+  setPagination,
   setSearch,
-  setSize,
+  setSort,
 } from "./RecordSlice";
 import { getRecords } from "./RecordApi";
 import { useTranslation } from "react-i18next";
@@ -25,7 +23,8 @@ import {
 const RecordTable = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { page, size, orderBy, direction, data } = useSelector(selectRecords);
+  const { page, size, orderBy, direction, search, data } =
+    useSelector(selectRecords);
   const [open, setOpen] = useState(false);
   const [description, setDescription] = useState({});
 
@@ -37,6 +36,7 @@ const RecordTable = () => {
         flex: 1,
         type: "number",
         filterOperators: getGridNumericOperators({ t }),
+        quickFilter: (value) => `id${operators.equal}${value}`,
       },
       {
         field: "purpose",
@@ -44,6 +44,7 @@ const RecordTable = () => {
         flex: 1,
         sortable: false,
         filterOperators: getGridStringOperators({ t }),
+        quickFilter: (value) => `purpose${operators.equal}*${value}*`,
       },
       {
         field: "price",
@@ -55,6 +56,7 @@ const RecordTable = () => {
           return `${value.amount} ${value.currency}`;
         },
         filterOperators: getGridNumericOperators({ t }),
+        quickFilter: (value) => `price.amount${operators.equal}${value}`,
       },
       {
         field: "timestamp",
@@ -67,6 +69,7 @@ const RecordTable = () => {
           return moment(value).toDate();
         },
         filterOperators: getGridNumericOperators({ t }),
+        quickFilter: (value) => `timestamp${operators.equal}${value}`,
       },
       {
         field: "description",
@@ -86,13 +89,20 @@ const RecordTable = () => {
           </IconButton>
         ),
         filterOperators: getGridStringOperators({ t }),
+        quickFilter: (value) => `description${operators.equal}*${value}*`,
       },
     ],
     [t],
   );
 
+  const mapFieldName = (field) => {
+    if (field === "price") {
+      return "price.amount";
+    }
+    return field;
+  };
+
   const handleFilterChange = (model) => {
-    console.log({ model });
     if (model.items.length <= 0 && model.quickFilterValues.length <= 0) {
       dispatch(setSearch(undefined));
       return;
@@ -102,52 +112,41 @@ const RecordTable = () => {
       let field = model.items[0].field;
       let operator = model.items[0].operator;
       let value = model.items[0].value;
-      if (field === "price") {
-        field = "price.amount";
-      }
-      search += buildSearchString({ field, operator, value });
+      search += buildSearchString({
+        field: mapFieldName(field),
+        operator,
+        value,
+      });
     }
     if (model.quickFilterValues.length > 0) {
       const value = model.quickFilterValues[0];
       if (search.length > 0) {
         search += " AND ";
       }
-      search += "( ";
-      search += `id${operators.equal}${value}`;
-      search += " OR ";
-      search += `purpose${operators.equal}*${value}*`;
-      search += " OR ";
-      search += `price.amount${operators.equal}${value}`;
-      search += " OR ";
-      search += `timestamp${operators.equal}${value}`;
-      search += " OR ";
-      search += `description${operators.equal}*${value}*`;
-      search += " )";
+
+      search += `( ${columns.map((o) => o.quickFilter(value)).join(" OR ")} )`;
     }
     dispatch(setSearch(search));
   };
 
   const handlePaginationChange = ({ page, size }) => {
-    dispatch(setPage(page));
-    dispatch(setSize(size));
+    dispatch(setPagination({ page, size }));
   };
 
   const handleSortChange = ({ orderBy, direction }) => {
     if (orderBy === undefined || direction === undefined) {
       return;
     }
-    dispatch(setOrderBy(orderBy));
-    dispatch(setDirection(direction));
+    dispatch(setSort({ orderBy: mapFieldName(orderBy), direction }));
   };
 
   useEffect(() => {
     dispatch(getRecords());
-  }, [page, size, orderBy, direction]);
+  }, [page, size, orderBy, direction, search]);
 
   return (
     <>
       <DataGrid
-        autoHeight
         columns={columns}
         rows={data.content}
         rowCount={data.totalElements}
@@ -162,10 +161,6 @@ const RecordTable = () => {
             sortModel: [{ field: orderBy, sort: direction }],
           },
         }}
-        filterMode={"server"}
-        paginationMode={"server"}
-        pageSizeOptions={[10, 20]}
-        sortingMode={"server"}
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {

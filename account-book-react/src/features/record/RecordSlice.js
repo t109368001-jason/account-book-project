@@ -20,14 +20,19 @@ export const recordSlice = createSlice({
       state.page = 0;
       state.size = action.payload;
     },
+    setPagination: (state, action) => {
+      state.page = action.payload.page;
+      state.size = action.payload.size;
+    },
     setOrderBy: (state, action) => {
-      if (action.payload === "price") {
-        action.payload = "price_amount";
-      }
       state.orderBy = action.payload;
     },
     setDirection: (state, action) => {
       state.direction = action.payload;
+    },
+    setSort: (state, action) => {
+      state.orderBy = action.payload.orderBy;
+      state.direction = action.payload.direction;
     },
     setSearch: (state, action) => {
       state.search = action.payload;
@@ -39,13 +44,20 @@ export const recordSlice = createSlice({
         state.data = payload.data;
       })
       .addCase(getRecords.rejected, (state) => {
-        state.data = {};
+        state.data = { ...initialState.data };
       });
   },
 });
 
-export const { setPage, setSize, setOrderBy, setDirection, setSearch } =
-  recordSlice.actions;
+export const {
+  setPage,
+  setSize,
+  setPagination,
+  setOrderBy,
+  setDirection,
+  setSort,
+  setSearch,
+} = recordSlice.actions;
 
 export const selectRecords = (state) => state.records;
 
