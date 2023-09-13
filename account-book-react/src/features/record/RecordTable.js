@@ -9,10 +9,21 @@ import {
 } from "./RecordSlice";
 import { getRecords } from "./RecordApi";
 import { useTranslation } from "react-i18next";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
+} from "@mui/x-data-grid";
 import moment from "moment";
-import { IconButton, Modal, Paper, Typography } from "@mui/material";
-import { Search as SearchIcon } from "@mui/icons-material";
+import { Box, IconButton, Modal, Paper, Typography } from "@mui/material";
+import {
+  Refresh as RefreshIcon,
+  Search as SearchIcon,
+} from "@mui/icons-material";
 import { paperStyles } from "../../app/styles";
 import {
   buildSearchString,
@@ -151,6 +162,23 @@ const RecordTable = () => {
     return () => dispatch(reset());
   }, []);
 
+  const CustomGridToolbar = () => {
+    return (
+      <GridToolbarContainer>
+        <IconButton color={"primary"} onClick={() => dispatch(getRecords())}>
+          <RefreshIcon />
+        </IconButton>
+        {/* defaults */}
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarExport />
+        <Box sx={{ flexGrow: 1 }}></Box>
+        <GridToolbarQuickFilter />
+      </GridToolbarContainer>
+    );
+  };
+
   return (
     <>
       <DataGrid
@@ -168,7 +196,7 @@ const RecordTable = () => {
             sortModel: [{ field: orderBy, sort: direction }],
           },
         }}
-        slots={{ toolbar: GridToolbar }}
+        slots={{ toolbar: CustomGridToolbar }}
         slotProps={{
           toolbar: {
             showQuickFilter: true,
