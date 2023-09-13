@@ -42,8 +42,7 @@ const LanguageMenu = () => {
             id={`language-menu-${locale}`}
             key={locale}
             onClick={() => {
-              i18n.changeLanguage(locale);
-              handleClose();
+              i18n.changeLanguage(locale).then(handleClose);
             }}
           >
             {locales[locale].title}

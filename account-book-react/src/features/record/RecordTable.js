@@ -27,7 +27,7 @@ const RecordTable = () => {
   const { page, size, orderBy, direction, search, data } =
     useSelector(selectRecords);
   const [open, setOpen] = useState(false);
-  const [description, setDescription] = useState({});
+  const [description, setDescription] = useState("");
 
   const columns = useMemo(
     () => [
@@ -35,6 +35,7 @@ const RecordTable = () => {
         field: "id",
         headerName: t("main.id"),
         flex: 1,
+        headerAlign: "center",
         type: "number",
         filterOperators: getGridNumericOperators({ t }),
         quickFilter: (value) => `id${operators.equal}${value}`,
@@ -44,6 +45,7 @@ const RecordTable = () => {
         headerName: t("main.purpose"),
         flex: 1,
         sortable: false,
+        headerAlign: "center",
         filterOperators: getGridStringOperators({ t }),
         quickFilter: (value) => `purpose${operators.equal}*${value}*`,
       },
@@ -52,7 +54,7 @@ const RecordTable = () => {
         headerName: t("main.price"),
         flex: 1,
         align: "right",
-        headerAlign: "right",
+        headerAlign: "center",
         valueGetter: ({ value }) => {
           return `${value.amount} ${value.currency}`;
         },
