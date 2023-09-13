@@ -13,6 +13,7 @@ export const recordSlice = createSlice({
   name: "records",
   initialState,
   reducers: {
+    reset: () => initialState,
     setPage: (state, action) => {
       state.page = action.payload;
     },
@@ -50,6 +51,7 @@ export const recordSlice = createSlice({
 });
 
 export const {
+  reset,
   setPage,
   setSize,
   setPagination,

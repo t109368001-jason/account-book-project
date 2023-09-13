@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  reset,
   selectRecords,
   setPagination,
   setSearch,
@@ -143,6 +144,10 @@ const RecordTable = () => {
   useEffect(() => {
     dispatch(getRecords());
   }, [page, size, orderBy, direction, search]);
+
+  useEffect(() => {
+    return () => dispatch(reset());
+  }, []);
 
   return (
     <>

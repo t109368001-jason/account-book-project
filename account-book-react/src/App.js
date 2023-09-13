@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import { Navigate, Route, Routes } from "react-router-dom";
-import IndexPage from "./pages/IndexPage";
 import LoginPage from "./pages/LoginPage";
 import RecordPage from "./pages/RecordPage";
 import { useDispatch } from "react-redux";
 import { getUser } from "./features/user/UserApi";
 import AccountBookPage from "./pages/AccountBookPage";
-import ABOverview from "./pages/ABOverview";
+import OverviewPage from "./pages/OverviewPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,11 +29,10 @@ function App() {
         <Route path={"login"} element={<LoginPage />} />
         <Route path={"account-book"} element={<AccountBookPage />}>
           <Route path={"record"} element={<RecordPage />} />
-          <Route index element={<ABOverview />} />
+          <Route index element={<OverviewPage />} />
           <Route path={"*"} element={<Navigate to="" />} />
         </Route>
-        <Route index element={<IndexPage />} />
-        <Route path={"*"} element={<Navigate to="" />} />
+        <Route path={"*"} element={<Navigate to="account-book" />} />
       </Routes>
     </>
   );
