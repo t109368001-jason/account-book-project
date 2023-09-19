@@ -28,14 +28,8 @@ public class Record {
   private String purpose;
 
   @Embedded
-  @AttributeOverride(
-      name = "amount",
-      column = @Column(name = "price_amount", nullable = false)
-  )
-  @AttributeOverride(
-      name = "currency",
-      column = @Column(name = "price_currency", nullable = false)
-  )
+  @AttributeOverride(name = "amount", column = @Column(name = "price_amount", nullable = false))
+  @AttributeOverride(name = "currency", column = @Column(name = "price_currency", nullable = false))
   private MonetaryAmount price;
 
   @Column(nullable = false)
@@ -43,5 +37,4 @@ public class Record {
 
   @Column(columnDefinition = "text")
   private String description;
-
 }

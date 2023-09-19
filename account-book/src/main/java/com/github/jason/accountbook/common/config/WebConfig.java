@@ -17,13 +17,12 @@ public class WebConfig {
     return new WebMvcConfigurer() {
       @Override
       public void addCorsMappings(@NonNull CorsRegistry registry) {
-        registry.addMapping("/**")
-            .allowedOrigins(config.getOrigins()
-                .toArray(new String[0]))
+        registry
+            .addMapping("/**")
+            .allowedOrigins(config.getOrigins().toArray(new String[0]))
             .allowedMethods("*")
             .allowedHeaders("*");
       }
     };
   }
-
 }

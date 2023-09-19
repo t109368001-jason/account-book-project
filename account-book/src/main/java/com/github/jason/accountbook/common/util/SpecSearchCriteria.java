@@ -11,8 +11,8 @@ public class SpecSearchCriteria {
   private SearchOperation operation;
   private Object value;
 
-  public SpecSearchCriteria(String key, String operation, String prefix, String value,
-      String suffix) {
+  public SpecSearchCriteria(
+      String key, String operation, String prefix, String value, String suffix) {
     SearchOperation op = SearchOperation.getSimpleOperation(operation.charAt(0));
     if (op != null) {
       if (op == SearchOperation.EQUALITY) { // the operation may be complex operation

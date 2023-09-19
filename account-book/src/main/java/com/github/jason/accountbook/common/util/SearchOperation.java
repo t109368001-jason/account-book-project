@@ -1,13 +1,20 @@
 package com.github.jason.accountbook.common.util;
 
 public enum SearchOperation {
-  EQUALITY, NEGATION, GREATER_THAN, LESS_THAN, LIKE, STARTS_WITH, ENDS_WITH, CONTAINS;
+  EQUALITY,
+  NEGATION,
+  GREATER_THAN,
+  LESS_THAN,
+  LIKE,
+  STARTS_WITH,
+  ENDS_WITH,
+  CONTAINS;
 
   // language=RegExp
   public static final String TOKEN_DELIMITER = "\\s+";
   public static final String[] SIMPLE_OPERATION_SET = {"=", "!", ">", "<", "~"};
-  public static final String OPERATION_SET_REGEXP = String.join("|",
-      SearchOperation.SIMPLE_OPERATION_SET);
+  public static final String OPERATION_SET_REGEXP =
+      String.join("|", SearchOperation.SIMPLE_OPERATION_SET);
 
   public static final String OR_PREDICATE_FLAG = "'";
 

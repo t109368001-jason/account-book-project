@@ -55,9 +55,11 @@ public class LogFileService {
       if (StringUtils.isNotBlank(filter)) {
         fileStream = fileStream.filter(p -> StringUtils.containsIgnoreCase(p.toString(), filter));
       }
-      logFileList = fileStream.map(a -> toLogFileVo(a))
-          .sorted(Comparator.comparing(LogFile::getName))
-          .collect(Collectors.toSet());
+      logFileList =
+          fileStream
+              .map(a -> toLogFileVo(a))
+              .sorted(Comparator.comparing(LogFile::getName))
+              .collect(Collectors.toSet());
     } catch (IOException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot open file");
     }
@@ -102,17 +104,14 @@ public class LogFileService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot open file");
     }
     return LogFile.builder()
-        .name(file.getFileName()
-            .toString())
+        .name(file.getFileName().toString())
         .size(humanReadableByteCount(size, true))
         .lastModified(lastModifiedTime)
         .path(file.toString())
         .build();
   }
 
-  /**
-   * check file > 10MB can't view online
-   */
+  /** check file > 10MB can't view online */
   public boolean checkCanViewOnline(String fileName) {
     final Path file = logFileFolder.resolve(fileName);
     if (!Files.exists(file)) {
@@ -143,5 +142,4 @@ public class LogFileService {
     }
     return baos.toByteArray();
   }
-
 }

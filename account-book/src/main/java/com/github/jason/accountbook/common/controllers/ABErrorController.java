@@ -37,8 +37,8 @@ public class ABErrorController extends BasicErrorController {
       log.warn("[RES]", error);
       return new ResponseEntity<>(status);
     }
-    Map<String, Object> body = getErrorAttributes(request,
-        getErrorAttributeOptions(request, MediaType.ALL));
+    Map<String, Object> body =
+        getErrorAttributes(request, getErrorAttributeOptions(request, MediaType.ALL));
     if (status.is5xxServerError()) {
       log.error("[RES] res={}", body, error);
     } else {

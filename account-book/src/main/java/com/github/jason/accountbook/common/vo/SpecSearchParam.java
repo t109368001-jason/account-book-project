@@ -16,5 +16,4 @@ public class SpecSearchParam {
 
   @Parameter(description = "specification search string")
   private String search;
-
 }

@@ -16,8 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 @ToString
 @Slf4j
 @Component
-public class HttpCookieOAuth2AuthorizationRequestRepository implements
-    AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
+public class HttpCookieOAuth2AuthorizationRequestRepository
+    implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
   public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
   public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
@@ -39,36 +39,40 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements
   }
 
   @Override
-  public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest,
-      HttpServletRequest request, HttpServletResponse response) {
+  public void saveAuthorizationRequest(
+      OAuth2AuthorizationRequest authorizationRequest,
+      HttpServletRequest request,
+      HttpServletResponse response) {
     if (authorizationRequest == null) {
       CookieUtils.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
       CookieUtils.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
       return;
     }
 
-    CookieUtils.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
-        CookieUtils.serialize(authorizationRequest), cookieExpireSeconds);
+    CookieUtils.addCookie(
+        response,
+        OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
+        CookieUtils.serialize(authorizationRequest),
+        cookieExpireSeconds);
     final String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
 
     if (StringUtils.isNotBlank(redirectUriAfterLogin)) {
       if (!isAuthorizedRedirectUri(redirectUriAfterLogin)) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "invalid redirect_uri");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid redirect_uri");
       }
-      CookieUtils.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin,
-          cookieExpireSeconds);
+      CookieUtils.addCookie(
+          response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin, cookieExpireSeconds);
     }
   }
 
   @Override
-  public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request,
-      HttpServletResponse response) {
+  public OAuth2AuthorizationRequest removeAuthorizationRequest(
+      HttpServletRequest request, HttpServletResponse response) {
     return this.loadAuthorizationRequest(request);
   }
 
-  public void removeAuthorizationRequestCookies(HttpServletRequest request,
-      HttpServletResponse response) {
+  public void removeAuthorizationRequestCookies(
+      HttpServletRequest request, HttpServletResponse response) {
     CookieUtils.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
     CookieUtils.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
   }
@@ -76,13 +80,13 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean isAuthorizedRedirectUri(String uri) {
     final URI clientRedirectUri = URI.create(uri);
-    return config.getAuthorizedRedirectUris()
-        .stream()
-        .anyMatch(authorizedRedirectUri -> {
-          // Only validate host and port. Let the clients use different paths if they want to
-          URI authorizedURI = URI.create(authorizedRedirectUri);
-          return authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-              && authorizedURI.getPort() == clientRedirectUri.getPort();
-        });
+    return config.getAuthorizedRedirectUris().stream()
+        .anyMatch(
+            authorizedRedirectUri -> {
+              // Only validate host and port. Let the clients use different paths if they want to
+              URI authorizedURI = URI.create(authorizedRedirectUri);
+              return authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+                  && authorizedURI.getPort() == clientRedirectUri.getPort();
+            });
   }
 }

@@ -23,5 +23,4 @@ public class CORSConfig {
   public static final String CONFIG_PREFIX = "cors";
 
   private List<String> origins;
-
 }

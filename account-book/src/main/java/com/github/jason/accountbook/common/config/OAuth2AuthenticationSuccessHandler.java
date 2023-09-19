@@ -26,8 +26,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
   }
 
   @Override
-  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-      Authentication authentication) throws IOException {
+  public void onAuthenticationSuccess(
+      HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+      throws IOException {
     String targetUrl = determineTargetUrl(request, response, authentication);
 
     if (response.isCommitted()) {
@@ -39,25 +40,23 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     getRedirectStrategy().sendRedirect(request, response, targetUrl);
   }
 
-  protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
-      Authentication authentication) {
-    final Optional<String> redirectUri = CookieUtils.getCookie(request,
-            REDIRECT_URI_PARAM_COOKIE_NAME)
-        .map(Cookie::getValue);
+  protected String determineTargetUrl(
+      HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    final Optional<String> redirectUri =
+        CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME).map(Cookie::getValue);
 
     if (redirectUri.isPresent() && !repository.isAuthorizedRedirectUri(redirectUri.get())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          "invalid redirect_uri");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid redirect_uri");
     }
 
     return UriComponentsBuilder.fromUriString(redirectUri.orElse(getDefaultTargetUrl()))
-        .build().toUriString();
+        .build()
+        .toUriString();
   }
 
-  protected void clearAuthenticationAttributes(HttpServletRequest request,
-      HttpServletResponse response) {
+  protected void clearAuthenticationAttributes(
+      HttpServletRequest request, HttpServletResponse response) {
     super.clearAuthenticationAttributes(request);
     repository.removeAuthorizationRequestCookies(request, response);
   }
-
 }

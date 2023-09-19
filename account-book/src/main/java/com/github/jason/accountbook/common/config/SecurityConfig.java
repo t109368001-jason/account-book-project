@@ -36,7 +36,8 @@ public class SecurityConfig {
 
   private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
-  public SecurityConfig(final ObjectMapper mapper,
+  public SecurityConfig(
+      final ObjectMapper mapper,
       final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository,
       final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler) {
     this.mapper = mapper;
@@ -52,14 +53,14 @@ public class SecurityConfig {
   }
 
   @Bean
-  public UserDetailsService userDetailsService(SecurityProperties securityProperties,
-      PasswordEncoder passwordEncoder) {
+  public UserDetailsService userDetailsService(
+      SecurityProperties securityProperties, PasswordEncoder passwordEncoder) {
     SecurityProperties.User defaultUser = securityProperties.getUser();
-    return new InMemoryUserDetailsManager(User.withUsername(defaultUser.getName())
-        .password(passwordEncoder.encode(defaultUser.getPassword()))
-        .roles(defaultUser.getRoles()
-            .toArray(new String[0]))
-        .build());
+    return new InMemoryUserDetailsManager(
+        User.withUsername(defaultUser.getName())
+            .password(passwordEncoder.encode(defaultUser.getPassword()))
+            .roles(defaultUser.getRoles().toArray(new String[0]))
+            .build());
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -67,37 +68,49 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.securityMatcher("**")
         .authorizeHttpRequests( //
-            authz -> authz //
-                .requestMatchers( //
-                    "/", // home page
-                    "/login", // login page
-                    "/static/**", "/webjars/**", // server frontend resources
-                    "/error" // for spring default BasicErrorController
-                )
-                .permitAll()
-                .requestMatchers( //
-                    UserController.PATH_PREFIX + UserController.INDEX_PATH, //
-                    RecordController.PATH_PREFIX + RecordController.INDEX_PATH //
-                )
-                .authenticated()
-                .anyRequest()
-                .hasRole("ADMIN"))
-        .oauth2Login(oauth2 -> oauth2 //
-            .authorizationEndpoint(
-                authorizationEndpointConfig -> authorizationEndpointConfig.authorizationRequestRepository(
-                    authorizationRequestRepository))
-            .successHandler(oAuth2AuthenticationSuccessHandler)
-            .failureHandler(
-                (request, response, exception) -> authorizationRequestRepository.removeAuthorizationRequestCookies(
-                    request, response)))
-        .formLogin(login -> login.failureHandler((request, response, exception) -> {
-          response.setStatus(HttpStatus.UNAUTHORIZED.value());
-          response.setContentType("application/json");
-        }).successHandler((request, response, authentication) -> {
-          response.setContentType("application/json");
-          response.getWriter().write(mapper.writeValueAsString(authentication));
-        })).logout(logout -> logout.logoutSuccessHandler((request, response, authentication) -> {
-        }))
+            authz ->
+                authz //
+                    .requestMatchers( //
+                        "/", // home page
+                        "/login", // login page
+                        "/static/**",
+                        "/webjars/**", // server frontend resources
+                        "/error" // for spring default BasicErrorController
+                        )
+                    .permitAll()
+                    .requestMatchers( //
+                        UserController.PATH_PREFIX + UserController.INDEX_PATH, //
+                        RecordController.PATH_PREFIX + RecordController.INDEX_PATH //
+                        )
+                    .authenticated()
+                    .anyRequest()
+                    .hasRole("ADMIN"))
+        .oauth2Login(
+            oauth2 ->
+                oauth2 //
+                    .authorizationEndpoint(
+                        authorizationEndpointConfig ->
+                            authorizationEndpointConfig.authorizationRequestRepository(
+                                authorizationRequestRepository))
+                    .successHandler(oAuth2AuthenticationSuccessHandler)
+                    .failureHandler(
+                        (request, response, exception) ->
+                            authorizationRequestRepository.removeAuthorizationRequestCookies(
+                                request, response)))
+        .formLogin(
+            login ->
+                login
+                    .failureHandler(
+                        (request, response, exception) -> {
+                          response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                          response.setContentType("application/json");
+                        })
+                    .successHandler(
+                        (request, response, authentication) -> {
+                          response.setContentType("application/json");
+                          response.getWriter().write(mapper.writeValueAsString(authentication));
+                        }))
+        .logout(logout -> logout.logoutSuccessHandler((request, response, authentication) -> {}))
         .cors(cors -> Customizer.withDefaults())
         .csrf(AbstractHttpConfigurer::disable);
     return http.build();
@@ -119,5 +132,4 @@ public class SecurityConfig {
     source.registerCorsConfiguration("/**", configuration);
     return source;
   }
-
 }

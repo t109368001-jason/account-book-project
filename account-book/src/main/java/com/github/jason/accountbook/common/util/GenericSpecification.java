@@ -21,8 +21,8 @@ public class GenericSpecification<T> implements Specification<T> {
   private final ObjectMapper mapper;
   private SpecSearchCriteria criteria;
 
-  public GenericSpecification(Class<T> tClass, final ObjectMapper mapper,
-      final SpecSearchCriteria criteria) {
+  public GenericSpecification(
+      Class<T> tClass, final ObjectMapper mapper, final SpecSearchCriteria criteria) {
     super();
     this.tClass = tClass;
     this.mapper = mapper;
@@ -30,22 +30,22 @@ public class GenericSpecification<T> implements Specification<T> {
   }
 
   @Override
-  public Predicate toPredicate(@NonNull final Root<T> root, @NonNull final CriteriaQuery<?> query,
+  public Predicate toPredicate(
+      @NonNull final Root<T> root,
+      @NonNull final CriteriaQuery<?> query,
       @NonNull final CriteriaBuilder builder) {
     String key = criteria.getKey();
     Object value = criteria.getValue();
     Class<?> valueType = tClass;
     From<?, ?> from = root;
-    if (criteria.getKey()
-        .contains(".")) {
-      final String[] keys = criteria.getKey()
-          .split("\\.");
+    if (criteria.getKey().contains(".")) {
+      final String[] keys = criteria.getKey().split("\\.");
       for (int i = 0; i < keys.length; i++) {
         final String _key = keys[i];
         final Field field = FieldUtils.getField(valueType, _key, true);
         if (field == null) {
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-              "'" + criteria.getKey() + "' search key not found");
+          throw new ResponseStatusException(
+              HttpStatus.BAD_REQUEST, "'" + criteria.getKey() + "' search key not found");
         }
         key = _key;
         valueType = field.getType();
@@ -56,16 +56,16 @@ public class GenericSpecification<T> implements Specification<T> {
     } else {
       final Field field = FieldUtils.getField(tClass, key, true);
       if (field == null) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "'" + criteria.getKey() + "' search key not found");
+        throw new ResponseStatusException(
+            HttpStatus.BAD_REQUEST, "'" + criteria.getKey() + "' search key not found");
       }
       valueType = field.getType();
     }
     try {
       value = mapper.convertValue(value, valueType);
     } catch (IllegalArgumentException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          "invalid value of key '" + criteria.getKey() + "'", e);
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "invalid value of key '" + criteria.getKey() + "'", e);
     }
     return switch (criteria.getOperation()) {
       case EQUALITY -> builder.equal(from.get(key), value);

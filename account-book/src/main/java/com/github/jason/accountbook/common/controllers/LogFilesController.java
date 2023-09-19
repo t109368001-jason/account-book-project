@@ -23,7 +23,7 @@ public class LogFilesController {
   @Value("${spring.application.name}")
   private String appName;
 
-  final private LogFileService logFileService;
+  private final LogFileService logFileService;
 
   public LogFilesController(final LogFileService logFileService) {
     this.logFileService = logFileService;
@@ -62,5 +62,4 @@ public class LogFilesController {
     model.addAttribute("logs", logFileService.info(null));
     return "logs";
   }
-
 }

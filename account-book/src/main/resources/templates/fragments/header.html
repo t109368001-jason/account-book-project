@@ -4,62 +4,62 @@
       lang="en">
 
 <head th:fragment="headerfiles">
-  <title th:text="${appName}">Demo Server</title>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <title th:text="${appName}">Demo Server</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
 </head>
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
-  <div class="container-fluid">
-    <a class="navbar-brand px-2" th:href="@{/}" th:text="${appName}">Demo Server</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="container-fluid">
+        <a class="navbar-brand px-2" th:href="@{/}" th:text="${appName}">Demo Server</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/swagger-ui/index.html}">
-            Swagger UI
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/logs}">
-            Log Files
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav mb-2 mb-lg-0">
-        <th:block sec:authorize="isAuthenticated()">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/swagger-ui/index.html}">
+                        Swagger UI
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logs}">
+                        Log Files
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <th:block sec:authorize="isAuthenticated()">
                     <span class="navbar-text text-primary" th:text="${#authentication.name}">
                     User
                     </span>
-          <li class=" nav-item">
-            <a class="nav-link" th:href="@{/logout}">
-              Logout
-            </a>
-          </li>
-        </th:block>
-        <th:block sec:authorize="isAnonymous()">
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/login}">
-              Login
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/registration}">
-              Register
-            </a>
-          </li>
-        </th:block>
-      </ul>
+                    <li class=" nav-item">
+                        <a class="nav-link" th:href="@{/logout}">
+                            Logout
+                        </a>
+                    </li>
+                </th:block>
+                <th:block sec:authorize="isAnonymous()">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}">
+                            Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/registration}">
+                            Register
+                        </a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 
 <script th:src="@{/webjars/jquery/jquery.min.js/}"></script>

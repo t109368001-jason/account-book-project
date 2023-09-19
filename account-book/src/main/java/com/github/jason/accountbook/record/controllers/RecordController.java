@@ -46,17 +46,24 @@ public class RecordController {
   }
 
   @GetMapping(INDEX_PATH)
-  public Page<Record> findBySpecAndPage(@ParameterObject final SpecSearchParam param,
-      @ParameterObject final Pageable pageable, final Authentication authentication) {
-    log.info("[REQ] findBySpecAndPage() param={}, pageable={}, authentication={}", param, pageable,
+  public Page<Record> findBySpecAndPage(
+      @ParameterObject final SpecSearchParam param,
+      @ParameterObject final Pageable pageable,
+      final Authentication authentication) {
+    log.info(
+        "[REQ] findBySpecAndPage() param={}, pageable={}, authentication={}",
+        param,
+        pageable,
         authentication);
-    Specification<Record> spec = new GenericSpecification<>(Record.class, mapper,
-        new SpecSearchCriteria("userId", SearchOperation.EQUALITY, authentication.getName()));
+    Specification<Record> spec =
+        new GenericSpecification<>(
+            Record.class,
+            mapper,
+            new SpecSearchCriteria("userId", SearchOperation.EQUALITY, authentication.getName()));
     if (StringUtils.isNotBlank(param.getSearch())) {
-      final Specification<Record> reqSpec = GenericSpecificationsBuilder.build(param.getSearch(),
-          Record.class, mapper);
-      spec = Specification.where(spec)
-          .and(reqSpec);
+      final Specification<Record> reqSpec =
+          GenericSpecificationsBuilder.build(param.getSearch(), Record.class, mapper);
+      spec = Specification.where(spec).and(reqSpec);
     }
     final Page<Record> res = repo.findAll(spec, pageable);
     log.info("[RES] findBySpecAndPage() res={}", res);
@@ -71,5 +78,4 @@ public class RecordController {
     log.info("[RES] add() record={}", record);
     return record;
   }
-
 }

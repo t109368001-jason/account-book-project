@@ -22,9 +22,6 @@ public class OAuth2Config {
 
   public static final String CONFIG_PREFIX = "oauth2";
 
-  /**
-   * Only validate host and port. Let the clients use different paths if they want to
-   */
+  /** Only validate host and port. Let the clients use different paths if they want to */
   private List<String> authorizedRedirectUris;
-
 }
