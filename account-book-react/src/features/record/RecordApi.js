@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api";
 import moment from "moment";
+import { initialState, setData } from "./RecordSlice";
+import { debounce } from "@mui/material";
 
 export const addRecord = (props) => {
   const priceAmount = props?.price?.amount || props.priceAmount;
@@ -39,12 +41,21 @@ addRecord.propTypes = PropTypes.oneOf([
 
 export const getRecords = createAsyncThunk(
   "records/getRecords",
-  (_, { getState }) => {
+  debounce((_, { getState, dispatch, requestId }) => {
+    console.log({ requestId });
     const state = getState();
-    let url = `/records?page=${state.records.page}&size=${state.records.size}&sort=${state.records.orderBy}%2C${state.records.direction}`;
-    if (state.records.search) {
-      url += `&search=${encodeURI(state.records.search)}`;
-    }
-    return api.get(url);
-  },
+    api
+      .get("/records", {
+        params: {
+          page: state.records.page,
+          size: state.records.size,
+          sort: `${state.records.orderBy},${state.records.direction}`,
+          search: state.records.search,
+        },
+      })
+      .then((res) => {
+        dispatch(setData(res.data));
+      })
+      .catch(dispatch(setData({ ...initialState.data })));
+  }, 200),
 );

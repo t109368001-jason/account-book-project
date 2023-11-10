@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getRecords } from "./RecordApi";
 
-const initialState = {
+export const initialState = {
   page: 0,
   size: 10,
   orderBy: "id",
@@ -37,16 +36,11 @@ export const recordSlice = createSlice({
     },
     setSearch: (state, action) => {
       state.search = action.payload;
+      state.page = 0;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getRecords.fulfilled, (state, { payload }) => {
-        state.data = payload.data;
-      })
-      .addCase(getRecords.rejected, (state) => {
-        state.data = { ...initialState.data };
-      });
+    setData: (state, { payload }) => {
+      state.data = payload;
+    },
   },
 });
 
@@ -59,6 +53,7 @@ export const {
   setDirection,
   setSort,
   setSearch,
+  setData,
 } = recordSlice.actions;
 
 export const selectRecords = (state) => state.records;
