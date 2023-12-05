@@ -10,13 +10,10 @@
         <module name="account-book" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="account-book" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="account-book" options="" />
+      <module name="account-book" options="-parameters" />
     </option>
   </component>
 </project>
