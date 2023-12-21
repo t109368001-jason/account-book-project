@@ -1,14 +1,24 @@
 {
   "compilerOptions": {
     "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "es2020",
+      "DOM"
     ],
-    "target": "ESNext",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "checkJs": false,
+    "jsx": "react",
     "types": [
-      "vite/client"
-    ],
-    "isolatedModules": true
-  }
+      "cypress",
+      "@testing-library/cypress"
+    ]
+  },
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "cypress/**/*.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
